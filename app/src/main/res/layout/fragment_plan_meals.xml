@@ -1,0 +1,160 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Toolbar for Plan Meals Fragment -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_plan_meals"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        app:title="Meal Planner"
+        app:titleTextColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- TextView to display the current week -->
+    <TextView
+        android:id="@+id/tv_current_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="October 2024"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_plan_meals"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Button for previous week navigation -->
+    <Button
+        android:id="@+id/btn_previous_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="&lt; Previous"
+        app:layout_constraintTop_toBottomOf="@id/tv_current_week"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/btn_next_week"/>
+
+    <!-- Button for next week navigation -->
+    <Button
+        android:id="@+id/btn_next_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="After &gt;"
+        app:layout_constraintTop_toBottomOf="@id/tv_current_week"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/btn_previous_week"/>
+
+    <!-- Layout for days of the week labels (Monday to Sunday) -->
+    <LinearLayout
+        android:id="@+id/linear_days_of_week"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/btn_previous_week">
+
+        <!-- Monday -->
+        <TextView
+            android:id="@+id/tv_monday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Mon"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <!-- Tuesday -->
+        <TextView
+            android:id="@+id/tv_tuesday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tue"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <!-- Wednesday -->
+        <TextView
+            android:id="@+id/tv_wednesday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Wed"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <!-- Thursday -->
+        <TextView
+            android:id="@+id/tv_thursday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Thu"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <!-- Friday -->
+        <TextView
+            android:id="@+id/tv_friday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Fri"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <!-- Saturday -->
+        <TextView
+            android:id="@+id/tv_saturday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sat"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <!-- Sunday -->
+        <TextView
+            android:id="@+id/tv_sunday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sun"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <!-- RecyclerView for displaying the days of the current week -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_days"
+        android:layout_width="408dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linear_days_of_week" />
+
+    <!-- RecyclerView for displaying the meals (Breakfast, Lunch, Dinner) for the selected day -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_meals"
+        android:layout_width="408dp"
+        android:layout_height="396dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView_days" />
+</androidx.constraintlayout.widget.ConstraintLayout>

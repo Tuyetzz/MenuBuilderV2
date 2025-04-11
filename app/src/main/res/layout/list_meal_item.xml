@@ -1,0 +1,93 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- Breakfast Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp">
+
+        <!-- Breakfast Icon -->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_breakfast"
+        android:layout_marginEnd="8dp" />
+
+        <!-- Button for Breakfast -->
+        <Button
+            android:id="@+id/btn_breakfast"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/custom_button_background"
+            android:drawableLeft="@drawable/ic_plus"
+            android:textSize="18sp"
+            android:gravity="start|center_vertical"
+            android:hint="Breakfast"
+            android:padding="16dp"/>
+    </LinearLayout>
+
+    <!-- Lunch Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp">
+
+        <!-- Lunch Icon -->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_lunch"
+        android:layout_marginEnd="8dp" />
+
+        <!-- Button for Lunch -->
+        <Button
+            android:id="@+id/btn_lunch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Lunch"
+            android:background="@drawable/custom_button_background"
+            android:drawableLeft="@drawable/ic_plus"
+            android:textSize="18sp"
+            android:gravity="start|center_vertical"
+            android:padding="16dp"/>
+    </LinearLayout>
+
+    <!-- Dinner Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp">
+
+        <!-- Dinner Icon -->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_dinner"
+        android:layout_marginEnd="8dp" />
+
+        <!-- Button for Dinner -->
+        <Button
+            android:id="@+id/btn_dinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Dinner"
+            android:background="@drawable/custom_button_background"
+            android:drawableLeft="@drawable/ic_plus"
+            android:textSize="18sp"
+            android:gravity="start|center_vertical"
+            android:padding="16dp"/>
+    </LinearLayout>
+</LinearLayout>

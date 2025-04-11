@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="colorSelected">#8D45E2</color> <!-- Màu cho nút được chọn -->
+    <color name="colorUnselected">#FFFFFFFF</color> <!-- Màu cho nút chưa chọn -->
+</resources>
