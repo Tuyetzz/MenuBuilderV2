@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.menubuilderv2.Adapter.FoodAdapter;
 import com.example.menubuilderv2.Model.Food;
 import com.example.menubuilderv2.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,12 @@ public class ManageRecipesFragment extends Fragment {
 
 
         recyclerView.setAdapter(adapter);
+
+        FloatingActionButton fabAddRecipe = rootView.findViewById(R.id.fab_add_recipe);
+        fabAddRecipe.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), AddFoodActivity.class);
+            startActivity(intent);
+        });
 
 
         return rootView;

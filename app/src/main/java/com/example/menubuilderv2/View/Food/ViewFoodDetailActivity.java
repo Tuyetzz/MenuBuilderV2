@@ -30,7 +30,6 @@ public class ViewFoodDetailActivity extends AppCompatActivity {
         Food food = (Food) getIntent().getSerializableExtra("food_data");
 
         if (food != null) {
-            // TODO: Hiển thị thông tin món ăn tại đây, ví dụ:
             TextView txtTitle = findViewById(R.id.txtFoodTitle);
             TextView txtGuide = findViewById(R.id.txtFoodGuide);
             txtTitle.setText(food.getName());

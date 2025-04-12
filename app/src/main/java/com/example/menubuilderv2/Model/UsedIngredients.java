@@ -2,13 +2,13 @@ package com.example.menubuilderv2.Model;
 
 public class UsedIngredients {
     public String id;
-    public float quantity;
+    public String quantity; // 👈 Changed from float to String
     public Ingredient ingredient;
 
     public UsedIngredients() {
     }
 
-    public UsedIngredients(String id, float quantity, Ingredient ingredient) {
+    public UsedIngredients(String id, String quantity, Ingredient ingredient) {
         this.id = id;
         this.quantity = quantity;
         this.ingredient = ingredient;
@@ -18,7 +18,7 @@ public class UsedIngredients {
     public String toString() {
         return "UsedIngredients{" +
                 "id='" + id + '\'' +
-                ", quantity=" + quantity +
+                ", quantity='" + quantity + '\'' +
                 ", ingredient=" + ingredient +
                 '}';
     }
@@ -31,11 +31,11 @@ public class UsedIngredients {
         this.id = id;
     }
 
-    public float getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(float quantity) {
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
 

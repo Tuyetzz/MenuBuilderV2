@@ -1,5 +1,6 @@
 package com.example.menubuilderv2.View.Food;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -22,5 +23,10 @@ public class AddFoodActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        findViewById(R.id.btnManageIngredients).setOnClickListener(v -> {
+            startActivity(new Intent(AddFoodActivity.this, ManageIngredientActivity.class));
+        });
+
     }
 }
