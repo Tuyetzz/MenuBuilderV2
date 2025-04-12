@@ -85,7 +85,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="#8D45E2"
+                android:backgroundTint="#AE6EFA"
                 android:text="My Recipes"
                 android:textColor="@android:color/black"
                 android:padding="10dp"

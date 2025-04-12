@@ -1,5 +1,6 @@
 package com.example.menubuilderv2.View.Food;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,8 +62,11 @@ public class ManageRecipesFragment extends Fragment {
         dummyList.add(new Food("3", "Phở bò", "Đặc sản Việt", "Món chính", "1. Luộc xương\n2. Thêm bánh phở", "https://i.imgur.com/ijkl.jpg", new ArrayList<>()));
 
         FoodAdapter adapter = new FoodAdapter(getContext(), dummyList, food -> {
-            Toast.makeText(getContext(), "Clicked: " + food.getName(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), ViewFoodDetailActivity.class);
+            intent.putExtra("food_data", food);
+            startActivity(intent);
         });
+
 
         recyclerView.setAdapter(adapter);
 
