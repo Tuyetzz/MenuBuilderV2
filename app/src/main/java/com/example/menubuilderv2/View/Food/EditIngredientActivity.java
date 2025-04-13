@@ -8,7 +8,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
+import android.util.Log;  // Import Log class
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -21,14 +22,13 @@ public class EditIngredientActivity extends AppCompatActivity {
 
     private EditText edtName, edtCategory, edtDesc, edtImageLink;
     private ImageView imgIngredient;
-    private Button btnSave;
+    private Button btnSave, btnCheckImage;
     private Ingredient ingredient;
     private IngredientViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_edit_ingredient);
 
         // Init Views
@@ -38,43 +38,51 @@ public class EditIngredientActivity extends AppCompatActivity {
         edtImageLink = findViewById(R.id.edtImageLink);
         imgIngredient = findViewById(R.id.imgIngredient);
         btnSave = findViewById(R.id.btnSave);
+        btnCheckImage = findViewById(R.id.btnCheckImage);
 
-        // Init ViewModel
-        viewModel = new ViewModelProvider(this).get(IngredientViewModel.class);
+        //check anh
+        btnCheckImage.setOnClickListener(v -> {
+            String url = edtImageLink.getText().toString().trim();
 
-        // Get ingredient ID from Intent
-        String ingredientId = getIntent().getStringExtra("ingredient_id");
-
-        // Fetch ingredient from ViewModel
-        viewModel.getIngredients().observe(this, ingredients -> {
-            for (Ingredient ing : ingredients) {
-                if (ing.id.equals(ingredientId)) {
-                    ingredient = ing;
-                    break;
-                }
-            }
-
-            if (ingredient != null) {
-                populateFields(ingredient);
+            // Kiểm tra nếu URL không trống
+            if (!url.isEmpty()) {
+                Glide.with(this)
+                        .load(url)
+                        .placeholder(R.drawable.ic_lunch) // Placeholder trong khi tải ảnh
+                        .error(R.drawable.ic_error) // Ảnh hiển thị khi tải ảnh thất bại
+                        .into(imgIngredient); // Tải ảnh vào ImageView
+            } else {
+                Toast.makeText(this, "Please enter a valid image URL", Toast.LENGTH_SHORT).show(); // Nếu URL trống
             }
         });
 
+
+        // Initialize ViewModel
+        viewModel = new ViewModelProvider(this).get(IngredientViewModel.class);
+
+        // Get the ingredient object passed from the previous activity
+        ingredient = getIntent().getParcelableExtra("ingredient");
+
+        if (ingredient != null) {
+            populateFields(ingredient);
+        } else {
+            Log.d("EditIngredientActivity", "Ingredient is null");
+        }
+
         // Button Save
         btnSave.setOnClickListener(v -> saveUpdatedIngredient());
-
-        // Handle Back button click
-        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
     }
 
+
     private void populateFields(Ingredient ingredient) {
-        edtName.setText(ingredient.name);
-        edtCategory.setText(ingredient.category);
-        edtDesc.setText(ingredient.desc);
-        edtImageLink.setText(ingredient.image);
+        edtName.setText(ingredient.getName());
+        edtCategory.setText(ingredient.getCategory());
+        edtDesc.setText(ingredient.getDesc());
+        edtImageLink.setText(ingredient.getImage());
 
         // Load image using Glide
         Glide.with(this)
-                .load(ingredient.image)
+                .load(ingredient.getImage())
                 .placeholder(R.drawable.ic_lunch)
                 .into(imgIngredient);
     }
@@ -92,18 +100,20 @@ public class EditIngredientActivity extends AppCompatActivity {
         }
 
         // Update ingredient object
-        ingredient.name = name;
-        ingredient.category = category;
-        ingredient.desc = desc;
-        ingredient.image = imageUrl;
+        ingredient.setName(name);
+        ingredient.setCategory(category);
+        ingredient.setDesc(desc);
+        ingredient.setImage(imageUrl);
 
         // Save updated ingredient
         viewModel.updateIngredient(ingredient, task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(this, "Ingredient updated successfully!", Toast.LENGTH_SHORT).show();
+                Log.d("EditIngredientActivity", "Ingredient updated successfully");
                 finish(); // Close activity
             } else {
                 Toast.makeText(this, "Failed to update ingredient.", Toast.LENGTH_SHORT).show();
+                Log.d("EditIngredientActivity", "Failed to update ingredient");
             }
         });
     }

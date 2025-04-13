@@ -82,7 +82,8 @@ public class ManageIngredientActivity extends AppCompatActivity {
             @Override
             public void onEdit(Ingredient ingredient) {
                 Intent intent = new Intent(ManageIngredientActivity.this, EditIngredientActivity.class);
-                intent.putExtra("ingredient_id", ingredient.id); // Passing the ingredient ID for editing
+                System.out.println("Truyen ingredient day " + ingredient);
+                intent.putExtra("ingredient", ingredient); // Passing the entire ingredient object for editing
                 startActivity(intent);
             }
 
@@ -94,6 +95,7 @@ public class ManageIngredientActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
     }
+
 
     private void deleteIngredient(Ingredient ingredient) {
         // Call ViewModel to delete ingredient from the database
