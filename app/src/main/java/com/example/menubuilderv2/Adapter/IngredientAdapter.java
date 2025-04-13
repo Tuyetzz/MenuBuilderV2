@@ -2,9 +2,12 @@ package com.example.menubuilderv2.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,16 +17,24 @@ import com.bumptech.glide.Glide;
 import com.example.menubuilderv2.Model.Ingredient;
 import com.example.menubuilderv2.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
 
-    private Context context;
-    private List<Ingredient> ingredientList;
+    private final Context context;
+    private final List<Ingredient> ingredientList;
+    private final OnIngredientActionListener listener;
 
-    public IngredientAdapter(Context context, List<Ingredient> ingredientList) {
+    public interface OnIngredientActionListener {
+        void onEdit(Ingredient ingredient);
+        void onDelete(Ingredient ingredient);
+    }
+
+    public IngredientAdapter(Context context, List<Ingredient> ingredientList, OnIngredientActionListener listener) {
         this.context = context;
-        this.ingredientList = ingredientList;
+        this.ingredientList = new ArrayList<>(ingredientList);
+        this.listener = listener;
     }
 
     @NonNull
@@ -36,7 +47,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     @Override
     public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
         Ingredient ingredient = ingredientList.get(position);
-
         holder.txtName.setText(ingredient.name);
         holder.txtCategory.setText(ingredient.category);
 
@@ -44,7 +54,28 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                 .load(ingredient.image)
                 .placeholder(R.drawable.ic_lunch)
                 .into(holder.imgIngredient);
+
+        holder.itemView.setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(context, v);
+            MenuInflater inflater = popup.getMenuInflater();
+            inflater.inflate(R.menu.menu_ingredient_item, popup.getMenu());
+
+            popup.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.action_edit) {
+                    listener.onEdit(ingredient);
+                    return true;
+                } else if (item.getItemId() == R.id.action_delete) {
+                    listener.onDelete(ingredient);
+                    return true;
+                }
+                return false;
+            });
+
+            popup.show();
+        });
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -61,5 +92,11 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
             txtName = itemView.findViewById(R.id.txtName);
             txtCategory = itemView.findViewById(R.id.txtCategory);
         }
+    }
+
+    public void updateList(List<Ingredient> newList) {
+        ingredientList.clear();
+        ingredientList.addAll(newList);
+        notifyDataSetChanged();
     }
 }

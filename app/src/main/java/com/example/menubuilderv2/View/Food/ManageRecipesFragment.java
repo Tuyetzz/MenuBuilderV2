@@ -35,6 +35,7 @@ public class ManageRecipesFragment extends Fragment {
         Button btnMyRecipes = rootView.findViewById(R.id.btn_my_recipes);
         Button btnSuggestedRecipes = rootView.findViewById(R.id.btn_suggested_recipes);
 
+        System.out.println("Day la ManageRecipesFragment");
         btnMyRecipes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

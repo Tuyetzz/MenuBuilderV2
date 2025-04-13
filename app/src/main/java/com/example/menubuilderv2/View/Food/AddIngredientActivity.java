@@ -97,4 +97,10 @@ public class AddIngredientActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        viewModel.loadIngredients(); // gọi lại khi quay lại
+    }
+
 }

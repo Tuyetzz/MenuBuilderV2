@@ -21,6 +21,7 @@ public class IngredientViewModel extends ViewModel {
         return ingredientsLiveData;
     }
 
+    // Load all ingredients from Firestore
     public void loadIngredients() {
         db.collection("Ingredient")
                 .get()
@@ -34,7 +35,24 @@ public class IngredientViewModel extends ViewModel {
                 });
     }
 
+    // Save a new ingredient or update an existing one
     public void saveIngredient(Ingredient ingredient, OnCompleteListener<Void> listener) {
+        db.collection("Ingredient")
+                .document(ingredient.id)
+                .set(ingredient)
+                .addOnCompleteListener(listener);
+    }
+
+    // Delete an ingredient from Firestore
+    public void deleteIngredient(Ingredient ingredient, OnCompleteListener<Void> listener) {
+        db.collection("Ingredient")
+                .document(ingredient.id)
+                .delete()
+                .addOnCompleteListener(listener);
+    }
+
+    // Update an ingredient in Firestore
+    public void updateIngredient(Ingredient ingredient, OnCompleteListener<Void> listener) {
         db.collection("Ingredient")
                 .document(ingredient.id)
                 .set(ingredient)
