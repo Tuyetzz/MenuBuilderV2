@@ -120,13 +120,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Search ingredients..."
-                android:drawableLeft="@android:drawable/ic_menu_search"
+                android:drawableLeft="@drawable/ic_search"
                 android:padding="12dp"
                 android:layout_marginTop="12dp" />
 
             <!-- Ingredient list -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerIngredients"
+                android:id="@+id/recyclerIngredientSelect"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="8dp" />

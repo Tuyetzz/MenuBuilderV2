@@ -1,5 +1,7 @@
 package com.example.menubuilderv2.ViewModel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -29,11 +31,22 @@ public class IngredientViewModel extends ViewModel {
                     List<Ingredient> tempList = new ArrayList<>();
                     for (DocumentSnapshot doc : queryDocumentSnapshots) {
                         Ingredient ingredient = doc.toObject(Ingredient.class);
-                        if (ingredient != null) tempList.add(ingredient);
+                        if (ingredient != null) {
+                            tempList.add(ingredient);
+                        }
                     }
+
+                    // Debug log to check if data is coming from Firestore
+                    Log.d("IngredientViewModel", "Loaded ingredients: " + tempList.size());
+
                     ingredientsLiveData.setValue(tempList);
+                })
+                .addOnFailureListener(e -> {
+                    // Handle failure to fetch data
+                    Log.e("IngredientViewModel", "Error loading ingredients", e);
                 });
     }
+
 
     // Save a new ingredient or update an existing one
     public void saveIngredient(Ingredient ingredient, OnCompleteListener<Void> listener) {

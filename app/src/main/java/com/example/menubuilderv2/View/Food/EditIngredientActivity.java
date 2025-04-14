@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class EditIngredientActivity extends AppCompatActivity {
     private Button btnSave, btnCheckImage;
     private Ingredient ingredient;
     private IngredientViewModel viewModel;
+    private ImageButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,9 @@ public class EditIngredientActivity extends AppCompatActivity {
         imgIngredient = findViewById(R.id.imgIngredient);
         btnSave = findViewById(R.id.btnSave);
         btnCheckImage = findViewById(R.id.btnCheckImage);
+
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> finish());
 
         //check anh
         btnCheckImage.setOnClickListener(v -> {

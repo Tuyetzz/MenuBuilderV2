@@ -3,7 +3,6 @@ package com.example.menubuilderv2.Adapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,7 +19,7 @@ import com.example.menubuilderv2.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
+public class IngredientAdapterManage extends RecyclerView.Adapter<IngredientAdapterManage.IngredientViewHolder> {
 
     private final Context context;
     private final List<Ingredient> ingredientList;
@@ -31,7 +30,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         void onDelete(Ingredient ingredient);
     }
 
-    public IngredientAdapter(Context context, List<Ingredient> ingredientList, OnIngredientActionListener listener) {
+    public IngredientAdapterManage(Context context, List<Ingredient> ingredientList, OnIngredientActionListener listener) {
         this.context = context;
         this.ingredientList = new ArrayList<>(ingredientList);
         this.listener = listener;

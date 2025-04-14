@@ -7,30 +7,24 @@
     android:padding="20dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- Nút Back -->
-
-    <!-- Tiêu đề -->
-
     <ImageButton
         android:id="@+id/btnBack"
         android:layout_width="37dp"
         android:layout_height="37dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Back"
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- LinearLayout bên trong ConstraintLayout -->
-
     <TextView
         android:id="@+id/txtEditIngredientTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="24dp"
         android:text="Edit Ingredient"
         android:textColor="@color/black"
         android:textSize="22sp"

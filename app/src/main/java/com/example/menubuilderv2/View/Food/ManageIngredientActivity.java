@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.menubuilderv2.Adapter.IngredientAdapter;
+import com.example.menubuilderv2.Adapter.IngredientAdapterManage;
 import com.example.menubuilderv2.Model.Ingredient;
 import com.example.menubuilderv2.R;
 import com.example.menubuilderv2.ViewModel.IngredientViewModel;
@@ -29,7 +29,7 @@ import java.util.List;
 public class ManageIngredientActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private IngredientAdapter adapter;
+    private IngredientAdapterManage adapter;
     private List<Ingredient> ingredientList = new ArrayList<>();
     private IngredientViewModel viewModel;
     private ProgressBar progressBar;
@@ -78,7 +78,7 @@ public class ManageIngredientActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new IngredientAdapter(this, ingredientList, new IngredientAdapter.OnIngredientActionListener() {
+        adapter = new IngredientAdapterManage(this, ingredientList, new IngredientAdapterManage.OnIngredientActionListener() {
             @Override
             public void onEdit(Ingredient ingredient) {
                 Intent intent = new Intent(ManageIngredientActivity.this, EditIngredientActivity.class);
