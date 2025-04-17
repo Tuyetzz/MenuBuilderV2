@@ -2,7 +2,7 @@ package com.example.menubuilderv2.Model;
 
 public class UsedIngredients {
     public String id;
-    public String quantity; // 👈 Changed from float to String
+    public String quantity;
     public Ingredient ingredient;
 
     public UsedIngredients() {

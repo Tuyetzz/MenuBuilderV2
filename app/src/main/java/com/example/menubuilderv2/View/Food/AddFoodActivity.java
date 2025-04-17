@@ -1,9 +1,11 @@
 package com.example.menubuilderv2.View.Food;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.menubuilderv2.Adapter.IngredientAdapterSelect;
 import com.example.menubuilderv2.Model.Ingredient;
+import com.example.menubuilderv2.Model.UsedIngredients;
 import com.example.menubuilderv2.R;
 import com.example.menubuilderv2.ViewModel.IngredientViewModel;
 
@@ -33,61 +36,85 @@ public class AddFoodActivity extends AppCompatActivity {
     private IngredientViewModel ingredientViewModel;
     private EditText edtSearchIngredient;
     private TextView txtSelectedIngredientsSummary;
-    private List<Ingredient> selectedIngredients = new ArrayList<>();
+    private List<UsedIngredients> selectedUsedIngredients = new ArrayList<>();
+    private UsedIngredients usedIngredients;
+    private Button btnManageIngredients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_food);
-
-        // Adjust padding for system bars (status bar, navigation bar)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Set up RecyclerView
         recyclerView = findViewById(R.id.recyclerIngredientSelect);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Set up IngredientAdapterSelect
         adapter = new IngredientAdapterSelect(this, ingredientList, (ingredient, quantity) -> {
+            // Tạo mới đối tượng UsedIngredients cho mỗi lựa chọn
+            UsedIngredients newUsedIngredient = new UsedIngredients();
+
             if (quantity.isEmpty()) {
-                selectedIngredients.remove(ingredient);  // Remove ingredient if quantity is empty
+                // Nếu quantity trống, xóa nguyên liệu khỏi danh sách đã chọn
+                selectedUsedIngredients.removeIf(usedIngredient -> usedIngredient.getIngredient().equals(ingredient));
             } else {
-                ingredient.setDesc(quantity);  // Set the quantity as the ingredient's description temporarily
-                if (!selectedIngredients.contains(ingredient)) {
-                    selectedIngredients.add(ingredient);  // Add ingredient if it's not already in the selected list
+                // Cập nhật hoặc thêm nguyên liệu vào danh sách đã chọn
+                newUsedIngredient.setIngredient(ingredient);
+                newUsedIngredient.setQuantity(quantity);
+
+                // Nếu nguyên liệu chưa có trong danh sách, thêm vào
+                boolean exists = false;
+                for (UsedIngredients existing : selectedUsedIngredients) {
+                    if (existing.getIngredient().equals(ingredient)) {
+                        // Nếu nguyên liệu đã có rồi, chỉ cần cập nhật lại quantity
+                        existing.setQuantity(quantity);
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (!exists) {
+                    selectedUsedIngredients.add(newUsedIngredient);
                 }
             }
-            updateSelectedIngredientsSummary();  // Update summary text
+
+            // Cập nhật lại summary với tất cả nguyên liệu đã chọn
+            updateSelectedIngredientsSummary();
         });
+
+
         recyclerView.setAdapter(adapter);
 
         // Initialize ViewModel
         ingredientViewModel = new ViewModelProvider(this).get(IngredientViewModel.class);
         edtSearchIngredient = findViewById(R.id.edtSearchIngredient);
         txtSelectedIngredientsSummary = findViewById(R.id.txtSelectedIngredientsSummary);
+        btnManageIngredients = findViewById(R.id.btnManageIngredients);
+        btnManageIngredients.setOnClickListener(v -> {
+            // Tạo Intent để chuyển sang ManageIngredientActivity
+            Intent intent = new Intent(AddFoodActivity.this, ManageIngredientActivity.class);
+            startActivity(intent);
+        });
+
 
         // Observe the ingredient data from ViewModel
         ingredientViewModel.getIngredients().observe(this, ingredients -> {
             if (ingredients != null && !ingredients.isEmpty()) {
                 ingredientList.clear();
                 ingredientList.addAll(ingredients);
-                adapter.updateList(ingredientList);  // Update RecyclerView with data from DB
-                Log.d("AddFoodActivity", "Ingredients loaded: " + ingredientList.size());
+                adapter.updateList(ingredientList);
             } else {
                 Toast.makeText(AddFoodActivity.this, "No ingredients found.", Toast.LENGTH_SHORT).show();
-                Log.d("AddFoodActivity", "No ingredients found");
             }
         });
 
-        // Load ingredients from the database
         ingredientViewModel.loadIngredients();
 
-        // Setup search functionality
+
         setupSearchListener();
     }
 
@@ -118,17 +145,20 @@ public class AddFoodActivity extends AppCompatActivity {
 
     private void updateSelectedIngredientsSummary() {
         StringBuilder summary = new StringBuilder("Selected Ingredients: ");
-        for (Ingredient ingredient : selectedIngredients) {
-            if (ingredient.getDesc() != null && !ingredient.getDesc().isEmpty()) {
-                summary.append("\n").append(ingredient.getName()).append(": ").append(ingredient.getDesc());
+        for (UsedIngredients usedIngredient : selectedUsedIngredients) {
+            if (usedIngredient.getIngredient().getName() != null && !usedIngredient.getIngredient().getName().isEmpty()) {
+                summary.append("\n").append(usedIngredient.getIngredient().getName())
+                        .append(": ").append(usedIngredient.getQuantity());
+
             }
         }
+        System.out.println(selectedUsedIngredients);
         txtSelectedIngredientsSummary.setText(summary.toString());
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("AddFoodActivity", "Ingredients onResume: " + ingredientList.size());
     }
 }

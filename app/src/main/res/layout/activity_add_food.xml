@@ -20,7 +20,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Back button -->
             <ImageButton
                 android:id="@+id/btnBack"
                 android:layout_width="wrap_content"
@@ -29,7 +28,6 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Back" />
 
-            <!-- Title -->
             <TextView
                 android:id="@+id/txtAddItemTitle"
                 android:layout_width="match_parent"
@@ -42,7 +40,6 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="20dp" />
 
-            <!-- Name -->
             <EditText
                 android:id="@+id/edtFoodName"
                 android:layout_width="match_parent"
@@ -50,7 +47,6 @@
                 android:hint="Food Name"
                 android:padding="12dp" />
 
-            <!-- Description -->
             <EditText
                 android:id="@+id/edtFoodDesc"
                 android:layout_width="match_parent"
@@ -59,7 +55,6 @@
                 android:padding="12dp"
                 android:layout_marginTop="8dp" />
 
-            <!-- Category -->
             <EditText
                 android:id="@+id/edtFoodCategory"
                 android:layout_width="match_parent"
@@ -68,7 +63,47 @@
                 android:padding="12dp"
                 android:layout_marginTop="8dp" />
 
-            <!-- Guide -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/border"
+                android:padding="12dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add ingredients"/>
+
+                <EditText
+                    android:id="@+id/edtSearchIngredient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Search ingredients..."
+                    android:drawableLeft="@drawable/ic_search"
+                    android:padding="12dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@android:color/transparent"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerIngredientSelect"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/transparent"/>
+
+                <TextView
+                    android:id="@+id/txtSelectedIngredientsSummary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Selected Ingredients:"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp"
+                    android:background="@android:color/transparent" />
+            </LinearLayout>
+
             <EditText
                 android:id="@+id/edtFoodGuide"
                 android:layout_width="match_parent"
@@ -81,7 +116,6 @@
                 android:layout_marginTop="8dp"
                 android:scrollbars="vertical" />
 
-            <!-- Image -->
             <ImageView
                 android:id="@+id/imgSelected"
                 android:layout_width="match_parent"
@@ -90,7 +124,6 @@
                 android:src="@drawable/ic_lunch"
                 android:layout_marginTop="12dp" />
 
-            <!-- Image + Manage buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -114,35 +147,9 @@
                     android:text="Manage Ingredients" />
             </LinearLayout>
 
-            <!-- Search -->
-            <EditText
-                android:id="@+id/edtSearchIngredient"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Search ingredients..."
-                android:drawableLeft="@drawable/ic_search"
-                android:padding="12dp"
-                android:layout_marginTop="12dp" />
-
-            <!-- Ingredient list -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerIngredientSelect"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="8dp" />
-
-            <!-- Summary text -->
-            <TextView
-                android:id="@+id/txtSelectedIngredientsSummary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Selected Ingredients:"
-                android:textStyle="bold"
-                android:layout_marginTop="12dp" />
         </LinearLayout>
     </ScrollView>
 
-    <!-- Save button -->
     <Button
         android:id="@+id/btnSave"
         android:layout_width="match_parent"

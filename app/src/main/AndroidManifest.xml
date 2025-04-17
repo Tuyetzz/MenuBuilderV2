@@ -25,6 +25,7 @@
             android:exported="false" />
         <activity
             android:name=".View.Food.AddFoodActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".View.Food.ViewFoodDetailActivity"

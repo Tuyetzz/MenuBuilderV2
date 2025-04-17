@@ -48,10 +48,10 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         holder.txtCategory.setText(food.getCategory());
 
         // Load image
-        Glide.with(context)
-                .load(food.getImage())
-                .placeholder(R.drawable.ic_lunch)
-                .into(holder.imgFood);
+//        Glide.with(context)
+//                .load(food.getImage())
+//                .placeholder(R.drawable.ic_lunch)
+//                .into(holder.imgFood);
 
         // Click
         holder.itemView.setOnClickListener(v -> {

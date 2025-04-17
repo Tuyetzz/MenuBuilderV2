@@ -48,6 +48,7 @@
         android:id="@+id/edtQuantity"
         android:layout_gravity="center"
         android:layout_width="80dp"
+        android:focusable="true"
         android:layout_height="wrap_content"
         android:hint="Qty"
         android:inputType="text"
