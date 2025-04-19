@@ -4,7 +4,7 @@ import java.util.List;
 
 import java.io.Serializable;
 
-public class Food implements Serializable {
+public class Food {
     private String id;
     private String name;
     private String desc;

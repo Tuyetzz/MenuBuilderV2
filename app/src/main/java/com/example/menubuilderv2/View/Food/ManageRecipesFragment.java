@@ -65,7 +65,7 @@ public class ManageRecipesFragment extends Fragment {
 
         FoodAdapter adapter = new FoodAdapter(getContext(), dummyList, food -> {
             Intent intent = new Intent(getContext(), ViewFoodDetailActivity.class);
-            intent.putExtra("food_data", food);
+//            intent.putExtra("food_data", food);
             startActivity(intent);
         });
 

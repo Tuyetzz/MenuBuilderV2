@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -20,9 +23,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.menubuilderv2.Adapter.IngredientAdapterSelect;
+import com.example.menubuilderv2.Model.Food;
 import com.example.menubuilderv2.Model.Ingredient;
 import com.example.menubuilderv2.Model.UsedIngredients;
 import com.example.menubuilderv2.R;
+import com.example.menubuilderv2.ViewModel.FoodViewModel;
 import com.example.menubuilderv2.ViewModel.IngredientViewModel;
 
 import java.util.ArrayList;
@@ -37,10 +42,12 @@ public class AddFoodActivity extends AppCompatActivity {
     private List<Ingredient> ingredientList = new ArrayList<>();
     private List<Ingredient> originalIngredientList = new ArrayList<>();
     private IngredientViewModel ingredientViewModel;
-    private EditText edtSearchIngredient;
+    private EditText edtSearchIngredient, edtCheckImage, edtFoodName, edtFoodDesc, edtFoodCategory, edtFoodGuide;
     private TextView txtSelectedIngredientsSummary;
     private Map<String, UsedIngredients> selectedMap = new HashMap<>();
-    private Button btnManageIngredients;
+    private Button btnManageIngredients, btnCheckImage, btnSave;
+    private ImageView imgSelected;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +67,28 @@ public class AddFoodActivity extends AppCompatActivity {
         edtSearchIngredient = findViewById(R.id.edtSearchIngredient);
         txtSelectedIngredientsSummary = findViewById(R.id.txtSelectedIngredientsSummary);
         btnManageIngredients = findViewById(R.id.btnManageIngredients);
+        edtFoodName = findViewById(R.id.edtFoodName);
+        edtFoodDesc = findViewById(R.id.edtFoodDesc);
+        edtFoodCategory = findViewById(R.id.edtFoodCategory);
+        edtFoodGuide = findViewById(R.id.edtFoodGuide);
+        btnSave = findViewById(R.id.btnSave);
+
+        imgSelected = findViewById(R.id.imgSelected);
+        edtCheckImage = findViewById(R.id.edtCheckImage);
+        btnCheckImage = findViewById(R.id.btnCheckImage);
+        btnCheckImage.setOnClickListener(v -> {
+            String imageUrl = edtCheckImage.getText().toString().trim();
+            if (!imageUrl.isEmpty()) {
+                Glide.with(this)
+                        .load(imageUrl)
+                        .placeholder(R.drawable.ic_lunch)
+                        .error(R.drawable.ic_error) // bạn có thể thêm ảnh lỗi riêng nếu muốn
+                        .into(imgSelected);
+            } else {
+                Toast.makeText(this, "Vui lòng nhập link ảnh", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         adapter = new IngredientAdapterSelect(
                 this,
@@ -90,6 +119,44 @@ public class AddFoodActivity extends AppCompatActivity {
         observeIngredientData();
 
         setupSearchListener();
+
+        btnSave.setOnClickListener(v -> {
+            String name = edtFoodName.getText().toString().trim();
+            String desc = edtFoodDesc.getText().toString().trim();
+            String category = edtFoodCategory.getText().toString().trim();
+            String guide = edtFoodGuide.getText().toString().trim();
+            String imageUrl = edtCheckImage.getText().toString().trim();
+
+            List<UsedIngredients> listUsedIngredients = new ArrayList<>(selectedMap.values());
+
+            if (name.isEmpty() || listUsedIngredients.isEmpty()) {
+                Toast.makeText(this, "Tên món ăn và nguyên liệu là bắt buộc!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Food food = new Food();
+            food.setName(name);
+            food.setDesc(desc);
+            food.setCategory(category);
+            food.setGuide(guide);
+            food.setImage(imageUrl);
+            // KHÔNG set listUsedIngredients ở đây vì bạn đã tách bảng
+
+            FoodViewModel foodViewModel = new ViewModelProvider(this).get(FoodViewModel.class);
+            foodViewModel.saveFoodWithIngredients(
+                    food,
+                    listUsedIngredients,
+                    () -> {
+                        Toast.makeText(this, "Add successful!", Toast.LENGTH_SHORT).show();
+                        Log.d("CreatedFood", "Food saved into Firestore: " + food.toString());
+                    },
+                    () -> {
+                        Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+                        Log.e("CreatedFood", "Fail.");
+                    }
+            );
+        });
+
     }
 
     private void observeIngredientData() {
