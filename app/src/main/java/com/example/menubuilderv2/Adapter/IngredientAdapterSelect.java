@@ -1,6 +1,8 @@
 package com.example.menubuilderv2.Adapter;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,24 +16,30 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.menubuilderv2.Model.Ingredient;
+import com.example.menubuilderv2.Model.UsedIngredients;
 import com.example.menubuilderv2.R;
 
 import java.util.List;
+import java.util.Map;
 
 public class IngredientAdapterSelect extends RecyclerView.Adapter<IngredientAdapterSelect.IngredientSelectViewHolder> {
 
     private final Context context;
     private List<Ingredient> ingredientList;
-    private OnIngredientSelectedListener listener;
+    private final OnIngredientSelectedListener listener;
+    private final Map<String, UsedIngredients> selectedMap;
 
     public interface OnIngredientSelectedListener {
         void onIngredientSelected(Ingredient ingredient, String quantity);
     }
 
-    public IngredientAdapterSelect(Context context, List<Ingredient> ingredientList, OnIngredientSelectedListener listener) {
+    public IngredientAdapterSelect(Context context, List<Ingredient> ingredientList,
+                                   OnIngredientSelectedListener listener,
+                                   Map<String, UsedIngredients> selectedMap) {
         this.context = context;
         this.ingredientList = ingredientList;
         this.listener = listener;
+        this.selectedMap = selectedMap;
     }
 
     @NonNull
@@ -44,53 +52,56 @@ public class IngredientAdapterSelect extends RecyclerView.Adapter<IngredientAdap
     @Override
     public void onBindViewHolder(@NonNull IngredientSelectViewHolder holder, int position) {
         Ingredient ingredient = ingredientList.get(position);
+
         holder.txtIngredientName.setText(ingredient.getName());
         holder.txtIngredientCategory.setText(ingredient.getCategory());
         Glide.with(context)
                 .load(ingredient.getImage())
                 .placeholder(R.drawable.ic_lunch)
                 .into(holder.imgIngredient);
-        holder.checkSelect.setChecked(false);
-        holder.edtQuantity.setVisibility(View.GONE);
 
-        // checkbox
+        // Xoá TextWatcher cũ (nếu có)
+        if (holder.quantityWatcher != null) {
+            holder.edtQuantity.removeTextChangedListener(holder.quantityWatcher);
+        }
+
+        UsedIngredients selected = selectedMap.get(ingredient.getId());
+        if (selected != null) {
+            holder.checkSelect.setChecked(true);
+            holder.edtQuantity.setVisibility(View.VISIBLE);
+            holder.edtQuantity.setText(selected.getQuantity());
+        } else {
+            holder.checkSelect.setChecked(false);
+            holder.edtQuantity.setVisibility(View.GONE);
+            holder.edtQuantity.setText("");
+        }
+
         holder.checkSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                // Show quantity input field if checkbox is checked
                 holder.edtQuantity.setVisibility(View.VISIBLE);
-
-                // If quantity is empty, set it to 1
                 if (holder.edtQuantity.getText().toString().isEmpty()) {
                     holder.edtQuantity.setText("1");
                 }
-
-
                 listener.onIngredientSelected(ingredient, holder.edtQuantity.getText().toString());
             } else {
-                // Hide quantity input if checkbox is unchecked
                 holder.edtQuantity.setVisibility(View.GONE);
-                listener.onIngredientSelected(ingredient, "");  // Clear quantity when unchecked
+                listener.onIngredientSelected(ingredient, "");
             }
         });
 
-        // TextWatcher to update listener when quantity is modified
-        holder.edtQuantity.addTextChangedListener(new android.text.TextWatcher() {
+        holder.quantityWatcher = new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (holder.checkSelect.isChecked()) {
-                    String quantity = holder.edtQuantity.getText().toString();
-                    listener.onIngredientSelected(ingredient, quantity);
+                    listener.onIngredientSelected(ingredient, s.toString());
                 }
             }
+        };
 
-            @Override
-            public void afterTextChanged(android.text.Editable editable) {}
-        });
+        holder.edtQuantity.addTextChangedListener(holder.quantityWatcher);
     }
-
 
     @Override
     public int getItemCount() {
@@ -102,6 +113,7 @@ public class IngredientAdapterSelect extends RecyclerView.Adapter<IngredientAdap
         CheckBox checkSelect;
         EditText edtQuantity;
         ImageView imgIngredient;
+        TextWatcher quantityWatcher; // Thêm để quản lý TextWatcher an toàn
 
         public IngredientSelectViewHolder(@NonNull View itemView) {
             super(itemView);
