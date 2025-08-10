@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +47,7 @@ public class AddFoodActivity extends AppCompatActivity {
     private TextView txtSelectedIngredientsSummary;
     private Map<String, UsedIngredients> selectedMap = new HashMap<>();
     private Button btnManageIngredients, btnCheckImage, btnSave;
+    private ImageButton btnBack;
     private ImageView imgSelected;
 
 
@@ -71,7 +73,7 @@ public class AddFoodActivity extends AppCompatActivity {
         edtFoodDesc = findViewById(R.id.edtFoodDesc);
         edtFoodCategory = findViewById(R.id.edtFoodCategory);
         edtFoodGuide = findViewById(R.id.edtFoodGuide);
-        btnSave = findViewById(R.id.btnSave);
+        btnSave = findViewById(R.id.btnSaveNewFood);
 
         imgSelected = findViewById(R.id.imgSelected);
         edtCheckImage = findViewById(R.id.edtCheckImage);
@@ -88,7 +90,13 @@ public class AddFoodActivity extends AppCompatActivity {
                 Toast.makeText(this, "Vui lòng nhập link ảnh", Toast.LENGTH_SHORT).show();
             }
         });
-
+        btnBack = findViewById(R.id.btnBackAddItem);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         adapter = new IngredientAdapterSelect(
                 this,
@@ -140,7 +148,7 @@ public class AddFoodActivity extends AppCompatActivity {
             food.setCategory(category);
             food.setGuide(guide);
             food.setImage(imageUrl);
-            // KHÔNG set listUsedIngredients ở đây vì bạn đã tách bảng
+            food.setListUsedIngredients(listUsedIngredients);
 
             FoodViewModel foodViewModel = new ViewModelProvider(this).get(FoodViewModel.class);
             foodViewModel.saveFoodWithIngredients(
@@ -149,6 +157,7 @@ public class AddFoodActivity extends AppCompatActivity {
                     () -> {
                         Toast.makeText(this, "Add successful!", Toast.LENGTH_SHORT).show();
                         Log.d("CreatedFood", "Food saved into Firestore: " + food.toString());
+                        finish();
                     },
                     () -> {
                         Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();

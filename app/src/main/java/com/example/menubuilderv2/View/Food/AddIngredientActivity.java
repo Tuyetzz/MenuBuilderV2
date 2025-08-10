@@ -48,7 +48,7 @@ public class AddIngredientActivity extends AppCompatActivity {
         edtCategory = findViewById(R.id.edtCategory);
         edtDesc = findViewById(R.id.edtDesc);
         imgIngredient = findViewById(R.id.imgIngredient);
-        btnSave = findViewById(R.id.btnSave);
+        btnSave = findViewById(R.id.btnSaveNewIngredient);
         edtImageLink = findViewById(R.id.edtImageLink);
         btnCheck = findViewById(R.id.btnCheck);
 

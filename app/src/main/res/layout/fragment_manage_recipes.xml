@@ -34,7 +34,6 @@
             android:gravity="center_vertical"
             android:padding="8dp">
 
-            <!-- Button for Breakfast -->
             <EditText
                 android:id="@+id/searchRecipeInput"
                 android:layout_width="0dp"
@@ -54,7 +53,6 @@
             android:gravity="center_vertical"
             android:padding="8dp">
 
-            <!-- Button for Breakfast -->
             <EditText
                 android:id="@+id/categoryInput"
                 android:layout_width="0dp"
@@ -67,7 +65,6 @@
                 android:padding="16dp"/>
         </LinearLayout>
 
-        <!-- Segmented Control -->
         <LinearLayout
             android:id="@+id/segmentedControl"
             android:layout_width="match_parent"

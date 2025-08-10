@@ -1,6 +1,5 @@
 package com.example.menubuilderv2.View.Food;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -39,7 +38,7 @@ public class EditIngredientActivity extends AppCompatActivity {
         edtDesc = findViewById(R.id.edtDesc);
         edtImageLink = findViewById(R.id.edtImageLink);
         imgIngredient = findViewById(R.id.imgIngredient);
-        btnSave = findViewById(R.id.btnSave);
+        btnSave = findViewById(R.id.btnSaveEditFood);
         btnCheckImage = findViewById(R.id.btnCheckImage);
 
         btnBack = findViewById(R.id.btnBack);

@@ -1,6 +1,7 @@
 package com.example.menubuilderv2.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,10 +49,10 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         holder.txtCategory.setText(food.getCategory());
 
         // Load image
-//        Glide.with(context)
-//                .load(food.getImage())
-//                .placeholder(R.drawable.ic_lunch)
-//                .into(holder.imgFood);
+        Glide.with(context)
+                .load(food.getImage())
+                .placeholder(R.drawable.ic_lunch)
+                .into(holder.imgFood);
 
         // Click
         holder.itemView.setOnClickListener(v -> {
@@ -78,4 +79,11 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             txtCategory = itemView.findViewById(R.id.txtFoodCategory);
         }
     }
+    public void updateList(List<Food> newList) {
+        Log.d("FoodAdapter", "updateList() called with size = " + newList.size());
+        this.foodList.clear();
+        this.foodList.addAll(newList);
+        notifyDataSetChanged();
+    }
+
 }
