@@ -65,7 +65,7 @@ public class EditIngredientActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(IngredientViewModel.class);
 
         // Get the ingredient object passed from the previous activity
-        ingredient = getIntent().getParcelableExtra("ingredient");
+        ingredient = (Ingredient) getIntent().getSerializableExtra("ingredient");
 
         if (ingredient != null) {
             populateFields(ingredient);

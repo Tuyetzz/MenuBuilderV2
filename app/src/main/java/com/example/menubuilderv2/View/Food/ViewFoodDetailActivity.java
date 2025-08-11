@@ -1,10 +1,14 @@
 package com.example.menubuilderv2.View.Food;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -20,6 +24,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ViewFoodDetailActivity extends AppCompatActivity {
+
+    private Food currentFood;
+    private String currentFoodId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,25 +47,41 @@ public class ViewFoodDetailActivity extends AppCompatActivity {
         RecyclerView rvIngredients = findViewById(R.id.rvIngredients);
 
         ImageView btnBack = findViewById(R.id.btnBack);
+        ImageView btnEdit = findViewById(R.id.btnEdit);
+        ImageView btnDelete = findViewById(R.id.btnDelete);
+
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> finish());
         }
+
+        btnEdit.setOnClickListener(v -> {
+            if (currentFood != null) {
+                Intent intent = new Intent(this, EditFoodActivity.class);
+                intent.putExtra("food_data", currentFood);
+                startActivity(intent);
+            }
+        });
+
+        btnDelete.setOnClickListener(v -> showDeleteConfirmationDialog());
 
         rvIngredients.setLayoutManager(new LinearLayoutManager(this));
 
         Food food = (Food) getIntent().getSerializableExtra("food_data");
         if (food != null) {
+            currentFood = food;
             bindFoodToUi(food, txtTitle, txtCategory, txtDesc, txtGuide, imgFood, rvIngredients);
             return;
         }
 
         String foodId = getIntent().getStringExtra("food_id");
         if (foodId != null && !foodId.isEmpty()) {
+            currentFoodId = foodId;
             FirebaseFirestore.getInstance().collection("Food").document(foodId)
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         Food fetched = documentSnapshot.toObject(Food.class);
                         if (fetched != null) {
+                            currentFood = fetched;
                             bindFoodToUi(fetched, txtTitle, txtCategory, txtDesc, txtGuide, imgFood, rvIngredients);
                         } else {
                             finish();
@@ -67,6 +90,39 @@ public class ViewFoodDetailActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> finish());
         } else {
             finish();
+        }
+    }
+
+    private void showDeleteConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Xác nhận xóa")
+                .setMessage("Bạn có chắc chắn muốn xóa món ăn này?")
+                .setPositiveButton("Xóa", (dialog, which) -> deleteFood())
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
+    private void deleteFood() {
+        if (currentFoodId != null) {
+            FirebaseFirestore.getInstance().collection("Food").document(currentFoodId)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, "Đã xóa món ăn", Toast.LENGTH_SHORT).show();
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Lỗi khi xóa món ăn", Toast.LENGTH_SHORT).show();
+                    });
+        } else if (currentFood != null && currentFood.getId() != null) {
+            FirebaseFirestore.getInstance().collection("Food").document(currentFood.getId())
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, "Đã xóa món ăn", Toast.LENGTH_SHORT).show();
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Lỗi khi xóa món ăn", Toast.LENGTH_SHORT).show();
+                    });
         }
     }
 

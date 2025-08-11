@@ -1,10 +1,13 @@
 package com.example.menubuilderv2.Model;
 
-public class ShoppingListItems {
-    public String id;
-    public float quantity;
-    public String unit;
-    public Ingredient ingredient;
+import java.io.Serializable;
+
+public class ShoppingListItems implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String id;
+    private float quantity;
+    private String unit;
+    private Ingredient ingredient;
 
     public ShoppingListItems() {
     }

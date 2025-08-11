@@ -46,11 +46,11 @@ public class IngredientAdapterManage extends RecyclerView.Adapter<IngredientAdap
     @Override
     public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
         Ingredient ingredient = ingredientList.get(position);
-        holder.txtName.setText(ingredient.name);
-        holder.txtCategory.setText(ingredient.category);
+        holder.txtName.setText(ingredient.getName());
+        holder.txtCategory.setText(ingredient.getCategory());
 
         Glide.with(context)
-                .load(ingredient.image)
+                .load(ingredient.getImage())
                 .placeholder(R.drawable.ic_lunch)
                 .into(holder.imgIngredient);
 

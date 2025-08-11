@@ -2,12 +2,14 @@ package com.example.menubuilderv2.Model;
 
 import java.util.Date;
 import java.util.List;
+import java.io.Serializable;
 
-public class DailyPlan {
-    public String id;
-    public Date date;
-    public String userId;
-    public List<UsedFood> listUsedFood;
+public class DailyPlan implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String id;
+    private Date date;
+    private String userId;
+    private List<UsedFood> listUsedFood;
 
     public DailyPlan() {
     }

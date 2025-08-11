@@ -1,10 +1,13 @@
 package com.example.menubuilderv2.Model;
 
-public class UsedFood {
-    public String id;
-    public float quantity;
-    public String partOfDay;
-    public Food food;
+import java.io.Serializable;
+
+public class UsedFood implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String id;
+    private float quantity;
+    private String partOfDay;
+    private Food food;
 
     public UsedFood() {
     }

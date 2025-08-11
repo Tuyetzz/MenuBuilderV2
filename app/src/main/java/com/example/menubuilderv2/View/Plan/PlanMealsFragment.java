@@ -52,8 +52,8 @@ public class PlanMealsFragment extends Fragment {
         recyclerViewDays = view.findViewById(R.id.recyclerView_days);
         recyclerViewMeals = view.findViewById(R.id.recyclerView_meals);
 
-        // Set up RecyclerViews with Linear Layout
-        recyclerViewDays.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        // Set up RecyclerViews
+        recyclerViewDays.setLayoutManager(new androidx.recyclerview.widget.GridLayoutManager(getContext(), 7));
         recyclerViewMeals.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Data for the days of the week
@@ -107,6 +107,7 @@ public class PlanMealsFragment extends Fragment {
             tempCal.add(Calendar.DAY_OF_MONTH, 1);
         }
 
+        dayAdapter.onWeekChanged();
         dayAdapter.notifyDataSetChanged();
 
         // Update the current week title

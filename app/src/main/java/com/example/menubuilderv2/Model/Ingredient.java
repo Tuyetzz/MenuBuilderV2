@@ -1,14 +1,15 @@
 package com.example.menubuilderv2.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 
-public class Ingredient implements Parcelable {
-    public String id;
-    public String name;
-    public String category;
-    public String image;
-    public String desc;
+public class Ingredient implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    private String id;
+    private String name;
+    private String category;
+    private String image;
+    private String desc;
 
     public Ingredient() {
     }
@@ -71,39 +72,4 @@ public class Ingredient implements Parcelable {
     public void setDesc(String desc) {
         this.desc = desc;
     }
-
-    protected Ingredient(Parcel in) {
-        id = in.readString();
-        name = in.readString();
-        category = in.readString();
-        image = in.readString();
-        desc = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(name);
-        dest.writeString(category);
-        dest.writeString(image);
-        dest.writeString(desc);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Ingredient> CREATOR = new Creator<Ingredient>() {
-        @Override
-        public Ingredient createFromParcel(Parcel in) {
-            return new Ingredient(in);
-        }
-
-        @Override
-        public Ingredient[] newArray(int size) {
-            return new Ingredient[size];
-        }
-    };
-
 }

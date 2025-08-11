@@ -1,16 +1,19 @@
 package com.example.menubuilderv2.Model;
 
 import java.util.List;
+import java.io.Serializable;
 
-public class User {
-    public String id;
-    public String username;
-    public String pass;
-    public String email;
-    public String fullName;
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    private String id;
+    private String username;
+    private String pass;
+    private String email;
+    private String fullName;
 
-    public List<String> dailyPlanIds;
-    public List<String> shoppingListIds;
+    private List<String> dailyPlanIds;
+    private List<String> shoppingListIds;
 
     public User() {
     }

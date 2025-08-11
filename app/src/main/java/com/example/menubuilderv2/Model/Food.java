@@ -1,10 +1,11 @@
 package com.example.menubuilderv2.Model;
 
 import java.util.List;
-
 import java.io.Serializable;
 
-public class Food {
+public class Food implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
     private String id;
     private String name;
     private String desc;

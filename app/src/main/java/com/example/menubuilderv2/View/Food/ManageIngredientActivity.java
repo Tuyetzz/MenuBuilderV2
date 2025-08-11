@@ -141,7 +141,7 @@ public class ManageIngredientActivity extends AppCompatActivity {
     private void filterList(String keyword) {
         List<Ingredient> filteredList = new ArrayList<>();
         for (Ingredient ingredient : ingredientList) {
-            if (ingredient.name.toLowerCase().contains(keyword.toLowerCase())) {
+            if (ingredient.getName().toLowerCase().contains(keyword.toLowerCase())) {
                 filteredList.add(ingredient);
             }
         }

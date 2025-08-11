@@ -1,9 +1,13 @@
 package com.example.menubuilderv2.Model;
 
-public class UsedIngredients {
-    public String id;
-    public String quantity;
-    public Ingredient ingredient;
+import java.io.Serializable;
+
+public class UsedIngredients implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    private String id;
+    private String quantity;
+    private Ingredient ingredient;
 
     public UsedIngredients() {
     }

@@ -2,13 +2,15 @@ package com.example.menubuilderv2.Model;
 
 import java.util.Date;
 import java.util.List;
+import java.io.Serializable;
 
-public class ShoppingList {
-    public String id;
-    public Date startDate;
-    public Date endDate;
-    public List<ShoppingListItems> listShoppingListItems;
-    public User user;
+public class ShoppingList implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String id;
+    private Date startDate;
+    private Date endDate;
+    private List<ShoppingListItems> listShoppingListItems;
+    private User user;
 
     public ShoppingList(String id, Date startDate, Date endDate, List<ShoppingListItems> listShoppingListItems, User user) {
         this.id = id;
