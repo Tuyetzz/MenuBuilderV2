@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ public class IngredientAdapterSelect extends RecyclerView.Adapter<IngredientAdap
         this.ingredientList = ingredientList;
         this.listener = listener;
         this.selectedMap = selectedMap;
+        setHasStableIds(true);
     }
 
     @NonNull
@@ -65,6 +67,9 @@ public class IngredientAdapterSelect extends RecyclerView.Adapter<IngredientAdap
             holder.edtQuantity.removeTextChangedListener(holder.quantityWatcher);
         }
 
+        // Tạm thời gỡ listener để tránh trigger khi setChecked/setText programmatically
+        holder.checkSelect.setOnCheckedChangeListener(null);
+
         UsedIngredients selected = selectedMap.get(ingredient.getId());
         if (selected != null) {
             holder.checkSelect.setChecked(true);
@@ -76,16 +81,19 @@ public class IngredientAdapterSelect extends RecyclerView.Adapter<IngredientAdap
             holder.edtQuantity.setText("");
         }
 
-        holder.checkSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                holder.edtQuantity.setVisibility(View.VISIBLE);
-                if (holder.edtQuantity.getText().toString().isEmpty()) {
-                    holder.edtQuantity.setText("1");
+        holder.checkSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    holder.edtQuantity.setVisibility(View.VISIBLE);
+                    if (holder.edtQuantity.getText().toString().isEmpty()) {
+                        holder.edtQuantity.setText("1");
+                    }
+                    listener.onIngredientSelected(ingredient, holder.edtQuantity.getText().toString());
+                } else {
+                    holder.edtQuantity.setVisibility(View.GONE);
+                    listener.onIngredientSelected(ingredient, "");
                 }
-                listener.onIngredientSelected(ingredient, holder.edtQuantity.getText().toString());
-            } else {
-                holder.edtQuantity.setVisibility(View.GONE);
-                listener.onIngredientSelected(ingredient, "");
             }
         });
 
@@ -101,6 +109,13 @@ public class IngredientAdapterSelect extends RecyclerView.Adapter<IngredientAdap
         };
 
         holder.edtQuantity.addTextChangedListener(holder.quantityWatcher);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        Ingredient ingredient = ingredientList.get(position);
+        String id = ingredient != null ? ingredient.getId() : null;
+        return id != null ? id.hashCode() : position;
     }
 
     @Override

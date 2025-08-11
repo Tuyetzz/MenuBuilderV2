@@ -32,6 +32,8 @@ public class IngredientViewModel extends ViewModel {
                     for (DocumentSnapshot doc : queryDocumentSnapshots) {
                         Ingredient ingredient = doc.toObject(Ingredient.class);
                         if (ingredient != null) {
+                            // Ensure id is set from document id for stable selection mapping
+                            ingredient.setId(doc.getId());
                             tempList.add(ingredient);
                         }
                     }

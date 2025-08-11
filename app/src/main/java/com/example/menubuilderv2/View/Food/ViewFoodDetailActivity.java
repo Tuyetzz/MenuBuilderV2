@@ -9,10 +9,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.menubuilderv2.Adapter.FoodDetailIngredientAdapter;
 import com.example.menubuilderv2.Model.Food;
 import com.example.menubuilderv2.R;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ViewFoodDetailActivity extends AppCompatActivity {
 
@@ -27,22 +32,56 @@ public class ViewFoodDetailActivity extends AppCompatActivity {
             return insets;
         });
 
-        Food food = (Food) getIntent().getSerializableExtra("food_data");
+        TextView txtTitle = findViewById(R.id.txtFoodTitle);
+        TextView txtCategory = findViewById(R.id.txtFoodCategory);
+        TextView txtDesc = findViewById(R.id.txtFoodDesc);
+        TextView txtGuide = findViewById(R.id.txtFoodGuide);
+        ImageView imgFood = findViewById(R.id.imgFoodDetail);
+        RecyclerView rvIngredients = findViewById(R.id.rvIngredients);
 
-        if (food != null) {
-            TextView txtTitle = findViewById(R.id.txtFoodTitle);
-            TextView txtGuide = findViewById(R.id.txtFoodGuide);
-            txtTitle.setText(food.getName());
-            txtGuide.setText(food.getGuide());
-
-            System.out.println("Thuc an chuyen sang la " + food);
-
-            ImageView imgFood = findViewById(R.id.imgFoodDetail);
-            Glide.with(this)
-                    .load(food.getImage())
-                    .placeholder(R.drawable.ic_lunch)
-                    .into(imgFood);
+        ImageView btnBack = findViewById(R.id.btnBack);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
         }
 
+        rvIngredients.setLayoutManager(new LinearLayoutManager(this));
+
+        Food food = (Food) getIntent().getSerializableExtra("food_data");
+        if (food != null) {
+            bindFoodToUi(food, txtTitle, txtCategory, txtDesc, txtGuide, imgFood, rvIngredients);
+            return;
+        }
+
+        String foodId = getIntent().getStringExtra("food_id");
+        if (foodId != null && !foodId.isEmpty()) {
+            FirebaseFirestore.getInstance().collection("Food").document(foodId)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        Food fetched = documentSnapshot.toObject(Food.class);
+                        if (fetched != null) {
+                            bindFoodToUi(fetched, txtTitle, txtCategory, txtDesc, txtGuide, imgFood, rvIngredients);
+                        } else {
+                            finish();
+                        }
+                    })
+                    .addOnFailureListener(e -> finish());
+        } else {
+            finish();
+        }
+    }
+
+    private void bindFoodToUi(Food food, TextView txtTitle, TextView txtCategory, TextView txtDesc, TextView txtGuide,
+                               ImageView imgFood, RecyclerView rvIngredients) {
+        txtTitle.setText(food.getName());
+        txtCategory.setText(food.getCategory());
+        txtDesc.setText(food.getDesc());
+        txtGuide.setText(food.getGuide());
+
+        Glide.with(this)
+                .load(food.getImage())
+                .placeholder(R.drawable.ic_lunch)
+                .into(imgFood);
+
+        rvIngredients.setAdapter(new FoodDetailIngredientAdapter(this, food.getListUsedIngredients()));
     }
 }

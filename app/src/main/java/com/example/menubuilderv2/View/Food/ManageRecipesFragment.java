@@ -60,6 +60,7 @@ public class ManageRecipesFragment extends Fragment {
 
         FoodAdapter adapter = new FoodAdapter(getContext(), displayFoods, food -> {
             Intent intent = new Intent(getContext(), ViewFoodDetailActivity.class);
+            intent.putExtra("food_id", food.getId());
             startActivity(intent);
         });
         recyclerView.setAdapter(adapter);

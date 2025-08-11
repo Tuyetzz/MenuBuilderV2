@@ -36,6 +36,10 @@ public class FoodViewModel extends ViewModel {
                         for (DocumentSnapshot doc : value.getDocuments()) {
                             Food food = doc.toObject(Food.class);
                             if (food != null) {
+                                // Ensure id is present even if older docs didn't store it
+                                if (food.getId() == null || food.getId().isEmpty()) {
+                                    food.setId(doc.getId());
+                                }
                                 tempList.add(food);
                             }
                         }
